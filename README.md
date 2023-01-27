@@ -3,9 +3,11 @@
 ## Authenticating a Request
 ```php
 <?php
-use Passage\SDK;
+use Passage\SDK\Client as Passage;
+use Passage\SDK\Config;
 use \Psr\Http\Message\ServerRequestInterface as ServerRequest;
 use \Psr\Http\Message\ResponseInterface as Response;
+use Slim\Factory\AppFactory;
 
 $config = new Config(
     $_ENV['PASSAGE_APP_ID'],
@@ -33,7 +35,8 @@ $app->get(
 ## Retrieve App Info
 ```php
 <?php
-use Passage\SDK;
+use Passage\SDK\Client as Passage;
+use Passage\SDK\Config;
 
 $config = new Config(
     $_ENV['PASSAGE_APP_ID'],
@@ -46,9 +49,11 @@ $passageApp = $passage->getApp();
 ## Retrieve User Info
 ```php
 <?php
-use Passage\SDK;
+use Passage\SDK\Client as Passage;
+use Passage\SDK\Config;
 use \Psr\Http\Message\ServerRequestInterface as ServerRequest;
 use \Psr\Http\Message\ResponseInterface as Response;
+use Slim\Factory\AppFactory;
 
 $config = new Config(
     $_ENV['PASSAGE_APP_ID'],
@@ -73,9 +78,11 @@ $app->get(
 ## Activate/Deactivate User
 ```php
 <?php
-use Passage\SDK;
+use Passage\SDK\Client as Passage;
+use Passage\SDK\Config;
 use \Psr\Http\Message\ServerRequestInterface as ServerRequest;
 use \Psr\Http\Message\ResponseInterface as Response;
+use Slim\Factory\AppFactory;
 
 $config = new Config(
     $_ENV['PASSAGE_APP_ID'],
@@ -92,8 +99,8 @@ $app->get(
     function (ServerRequest $request, Response $response) use ($passage) {
         $userId = $passage->authenticateRequest($request);
         $user = $passage->users->get($userId);
-        $user->deactivate();
-        $user->activate();
+        $passage->users->deactivate($user);
+        $passage->users->activate($user);
     }
 );
 ```
@@ -101,9 +108,13 @@ $app->get(
 ## Update User Attributes
 ```php
 <?php
-use Passage\SDK;
+use Passage\SDK\Client as Passage;
+use Passage\SDK\Config;
+use Passage\SDK\UserAttributes;
+use Passage\SDK\Metadata;
 use \Psr\Http\Message\ServerRequestInterface as ServerRequest;
 use \Psr\Http\Message\ResponseInterface as Response;
+use Slim\Factory\AppFactory;
 
 $config = new Config(
     $_ENV['PASSAGE_APP_ID'],
@@ -134,7 +145,9 @@ $app->get(
 ## Create a User
 ```php
 <?php
-use Passage\SDK;
+use Passage\SDK\Client as Passage;
+use Passage\SDK\Config;
+use Passage\SDK\UserAttributes;
 
 $config = new Config(
     $_ENV['PASSAGE_APP_ID'],
