@@ -1,6 +1,6 @@
 # Passage-PHP
 
-Examples that need middleware use the Slim Framework to show how authenticated requests would work. They can be replaced with any other PHP middleware of choice.
+Examples that process HTTP requests use the Slim Framework to show how authenticated requests would work. They can be replaced with anything that provides a PSR-7 HTTP request.
 
 ## Authenticating a Request
 The Passage SDK can be used to authenticate a request by checking that the request contains a valid authentication token. Your App ID must be provided to Passage to verify JWTs.
