@@ -3,11 +3,16 @@
 ## Authenticating a Request
 ```php
 <?php
-use Passage;
+use Passage\SDK;
+use \Psr\Http\Message\ServerRequestInterface as ServerRequest;
+use \Psr\Http\Message\ResponseInterface as Response;
 
 $config = new Config(
-    PASSAGE_APP_ID,
+    $_ENV['PASSAGE_APP_ID'],
 );
+
+$app = AppFactory::create();
+$app->addRoutingMiddleware();
 
 $passage = new Passage($config);
 
@@ -28,10 +33,10 @@ $app->get(
 ## Retrieve App Info
 ```php
 <?php
-use Passage;
+use Passage\SDK;
 
 $config = new Config(
-    PASSAGE_APP_ID,
+    $_ENV['PASSAGE_APP_ID'],
 );
 
 $passage = new Passage($config);
@@ -41,12 +46,17 @@ $passageApp = $passage->getApp();
 ## Retrieve User Info
 ```php
 <?php
-use Passage;
+use Passage\SDK;
+use \Psr\Http\Message\ServerRequestInterface as ServerRequest;
+use \Psr\Http\Message\ResponseInterface as Response;
 
 $config = new Config(
-    PASSAGE_APP_ID,
-    PASSAGE_API_KEY
+    $_ENV['PASSAGE_APP_ID'],
+    $_ENV['PASSAGE_API_KEY']
 );
+
+$app = AppFactory::create();
+$app->addRoutingMiddleware();
 
 $passage = new Passage($config);
 
@@ -54,7 +64,7 @@ $app->get(
     '/authenticated_route',
     function (ServerRequest $request, Response $response) use ($passage) {
         $userId = $passage->authenticateRequest($request);
-        $user = $passage->user->get($userId);
+        $user = $passage->users->get($userId);
         return $user->email;
     }
 );
@@ -63,12 +73,17 @@ $app->get(
 ## Activate/Deactivate User
 ```php
 <?php
-use Passage;
+use Passage\SDK;
+use \Psr\Http\Message\ServerRequestInterface as ServerRequest;
+use \Psr\Http\Message\ResponseInterface as Response;
 
 $config = new Config(
-    PASSAGE_APP_ID,
-    PASSAGE_API_KEY
+    $_ENV['PASSAGE_APP_ID'],
+    $_ENV['PASSAGE_API_KEY']
 );
+
+$app = AppFactory::create();
+$app->addRoutingMiddleware();
 
 $passage = new Passage($config);
 
@@ -76,9 +91,9 @@ $app->get(
     '/authenticated_route',
     function (ServerRequest $request, Response $response) use ($passage) {
         $userId = $passage->authenticateRequest($request);
-        $user = $passage->user->get($userId);
-        $user->deactivate($userId);
-        $user->activate($userId);
+        $user = $passage->users->get($userId);
+        $user->deactivate();
+        $user->activate();
     }
 );
 ```
@@ -86,12 +101,17 @@ $app->get(
 ## Update User Attributes
 ```php
 <?php
-use Passage;
+use Passage\SDK;
+use \Psr\Http\Message\ServerRequestInterface as ServerRequest;
+use \Psr\Http\Message\ResponseInterface as Response;
 
 $config = new Config(
-    PASSAGE_APP_ID,
-    PASSAGE_API_KEY
+    $_ENV['PASSAGE_APP_ID'],
+    $_ENV['PASSAGE_API_KEY']
 );
+
+$app = AppFactory::create();
+$app->addRoutingMiddleware();
 
 $passage = new Passage($config);
 $attributes = new UserAttributes(
@@ -106,7 +126,7 @@ $app->get(
     '/authenticated_route',
     function (ServerRequest $request, Response $response) use ($passage) {
         $userId = $passage->authenticateRequest($request);
-        $user = $passage->user->update($userId, $attributes);
+        $user = $passage->users->update($userId, $attributes);
     }
 );
 ```
@@ -114,22 +134,22 @@ $app->get(
 ## Create a User
 ```php
 <?php
-use Passage;
+use Passage\SDK;
 
 $config = new Config(
-    PASSAGE_APP_ID,
-    PASSAGE_API_KEY
+    $_ENV['PASSAGE_APP_ID'],
+    $_ENV['PASSAGE_API_KEY']
 );
 
 $passage = new Passage($config);
-$newUserWithEmail = $passage->user->create(
+$newUserWithEmail = $passage->users->create(
     new UserAttributes(
         'newEmail@domain.com',
     )
 );
 var_dump($newUserWithEmail);
 
-$newUserWithPhone = $passage->user->create(
+$newUserWithPhone = $passage->users->create(
     new UserAttributes(
         null,
         '+15005550006',
