@@ -120,7 +120,7 @@ $app->get(
 
 ## Update User Attributes
 
-User's attributes can also be updated with the Passage SDK. This action requires an API key.
+A user's attributes can also be updated with the Passage SDK. This action requires an API key.
 
 ```php
 <?php
