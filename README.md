@@ -1,6 +1,10 @@
 # Passage-PHP
 
+Examples that need middleware use the Slim Framework to show how authenticated requests would work. They can be replaced with any other PHP middleware of choice.
+
 ## Authenticating a Request
+The Passage SDK can be used to authenticate a request by checking that the request contains a valid authentication token. Your App ID must be provided to Passage to verify JWTs.
+
 ```php
 <?php
 use Passage\SDK\Client as Passage;
@@ -33,6 +37,9 @@ $app->get(
 ```
 
 ## Retrieve App Info
+
+Information about an app can be retrieved using the `\Passage\SDK\Client::getApp()` method.
+
 ```php
 <?php
 use Passage\SDK\Client as Passage;
@@ -47,6 +54,9 @@ $passageApp = $passage->getApp();
 ```
 
 ## Retrieve User Info
+
+Information about a user can be retrieved using the `\Passage\SDK\Client::get()` method. You will need to use a Passage API key, which can be created in the Passage Console under your Application Settings. This API key grants your web server access to the Passage management APIs to get and update information about users. This API key must be protected and stored in an appropriate secure storage location. It should never be hard-coded in the repository.
+
 ```php
 <?php
 use Passage\SDK\Client as Passage;
@@ -76,6 +86,9 @@ $app->get(
 ```
 
 ## Activate/Deactivate User
+
+A user can be activated or deactivated within the Passage SDK. These actions require an API Key and deactivating a user will prevent them from logging into your application with Passage.
+
 ```php
 <?php
 use Passage\SDK\Client as Passage;
@@ -106,6 +119,9 @@ $app->get(
 ```
 
 ## Update User Attributes
+
+User's attributes can also be updated with the Passage SDK. This action requires an API key.
+
 ```php
 <?php
 use Passage\SDK\Client as Passage;
@@ -143,6 +159,9 @@ $app->get(
 ```
 
 ## Create a User
+
+A Passage user can be created by providing an `email` or `phone` (phone number must be a valid E164 phone number).
+
 ```php
 <?php
 use Passage\SDK\Client as Passage;
